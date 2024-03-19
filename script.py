@@ -13,8 +13,8 @@ current_dir = Path(__file__).resolve().parent if "__file__" in locals() else Pat
 envars = current_dir / ".env"
 load_dotenv(envars)
 
-sender_email = os.getenv("EMAIL")
-password_email = os.getenv("PASSWORD")
+sender_email = os.environ.get("EMAIL")
+password_email = os.environ.get("PASSWORD")
 
 def send_email(subject, receiver_email, Name, Preferred_Date, Preferred_Time):
     msg = EmailMessage()
