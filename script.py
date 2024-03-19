@@ -1,5 +1,5 @@
 import os
-import smtplib
+import smtplib, ssl
 from email.mime.text import MIMEText
 from email.message import EmailMessage
 from email.utils import formataddr
@@ -49,7 +49,7 @@ def send_email(subject, receiver_email, Name, Preferred_Date, Preferred_Time):
     """,
         subtype="html",
     )
-
-    with smtplib.SMTP_SSL(EMAIL_SERVER, PORT) as smtp_server:
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL(EMAIL_SERVER, PORT, context=context) as smtp_server:
         smtp_server.login(sender_email, password_email)
         smtp_server.sendmail(sender_email, receiver_email, msg.as_string())
