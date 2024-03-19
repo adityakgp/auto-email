@@ -1,0 +1,20 @@
+name: daily-email
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      - name: Run email script
+        env:
+          USER_EMAIL: ${{secrets.EMAIL}}
+          USER_PASSWORD: ${{secrets.PASSWORD}}
+        run: python main.py
