@@ -16,7 +16,7 @@ def query_data_and_send_emails_daily(df):
     t2=present-timedelta(hours=2)
     email_counter = 0
     for _, row in df.iterrows():
-        if (t2<row["Preferred_Time"]<t1):
+        if (t2<row["Preferred_Time"]<t1 and row["Preferred_Date"].date()==date.today()):
             send_email_hourly(
                 subject=f'Rate us',
                 receiver_email=row["Email_Address"],
