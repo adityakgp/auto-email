@@ -2,21 +2,41 @@ name: daily-email
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 0 * * *'
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
-  build:
+  run-main:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
+          server_address: smtp.gmail.com
+          server_port: 465
           python-version: 3.x
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Run email script
         env:
-          USER_EMAIL: ${{secrets.EMAIL}}
-          USER_PASSWORD: ${{secrets.PASSWORD}}
+          EMAIL: ${{secrets.EMAIL}}
+          PASSWORD: ${{secrets.PASSWORD}}
         run: python main.py
+
+  run-review:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+        - uses: actions/setup-python@v2
+          with:
+            server_address: smtp.gmail.com
+            server_port: 465
+            python-version: 3.x
+        - name: Install dependencies
+          run: pip install -r requirements.txt
+        - name: Run email script
+          env:
+            EMAIL: ${{secrets.EMAIL}}
+            PASSWORD: ${{secrets.PASSWORD}}
+          run: python review.py

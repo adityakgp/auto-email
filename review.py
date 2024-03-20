@@ -1,6 +1,6 @@
-from datetime import date, timedelta
+from datetime import datetime, timedelta
 import pandas as pd
-from script import send_email
+from script import send_email_hourly
 
 SHEET_ID='19opmWWe1XWSJoOo6MYEp5WsrtOo2nusPO3VW_65lMCQ'
 URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?gid=913445633&format=csv"
@@ -11,28 +11,20 @@ def load_df(url):
     return df
 
 def query_data_and_send_emails_daily(df):
-    present = date.today()
+    present = datetime.now()
+    t1=present-timedelta(hours=1)
+    t2=present-timedelta(hours=2)
     email_counter = 0
     for _, row in df.iterrows():
-        if (present+timedelta(days=3) == row["Preferred_Date"].date()):
-            send_email(
-                subject=f'Reminder for your appointment',
+        if (t2<row["Preferred_Time"]<t1):
+            send_email_hourly(
+                subject=f'Rate us',
                 receiver_email=row["Email_Address"],
                 Name=row["Name"],
-                Preferred_Date=row["Preferred_Date"].strftime("%d, %b %Y"),
-                Preferred_Time=row["Preferred_Time"].strftime("%I %p"),
             )
             email_counter += 1
     return f"Total Emails Sent: {email_counter}"
 
 df = load_df(URL)
 result = query_data_and_send_emails_daily(df)
-
-# df["Preferred_Time"] = pd.to_datetime(df["Preferred_Time"])
-# df["Cron_Time"] = df["Preferred_Time"].dt.strftime("%H %M")
-# cron_times_list = []
-
-# for cron_time in df["Cron_Time"]:
-#     cron_times_list.append(cron_time)
-
-# print(cron_times_list)
+print(result)
