@@ -18,6 +18,9 @@ jobs:
           python-version: 3.x
       - name: Install dependencies
         run: pip install -r requirements.txt
+      # - name: Load dotenv file
+      #   run: |
+      #     python -c "from dotenv import load_dotenv; load_dotenv()"
       - name: Run email script
         env:
           EMAIL: ${{secrets.EMAIL}}
