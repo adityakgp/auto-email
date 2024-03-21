@@ -25,7 +25,7 @@ def query_data_and_send_emails_daily(df):
                 receiver_email=row["Email_Address"],
                 Name=row["Name"],
                 Preferred_Date=row["Preferred_Date"].strftime("%d, %b %Y"),
-                Preferred_Time=row["Preferred_Time"].strftime("%I %p"),
+                Preferred_Time=row["Preferred_Time"].strftime("%I:%M %p"),
             )
             email_counter += 1
     return f"Total Emails Sent: {email_counter}"
