@@ -24,8 +24,8 @@ This project runs two cron jobs:
 
 ### Google Sheets Integration
 
-- **Booking Form Link:** [Link to the form to book appointments]
-- **Appointment Sheet:** [Link to the Google Sheet containing the appointments]
+- **Booking Form Link:** https://docs.google.com/forms/d/e/1FAIpQLSeCMq920gHdgKCMVJbvr1Nwmjpq4Tj6oZE8BPWmC0OTb6-iDA/viewform
+- **Appointment Sheet:** https://docs.google.com/spreadsheets/d/19opmWWe1XWSJoOo6MYEp5WsrtOo2nusPO3VW_65lMCQ/edit?usp=sharing
 
 ### Running Cron Jobs
 
