@@ -19,7 +19,7 @@ This project runs two cron jobs:
    - Schedule: Runs once per day.
    
 2. **Hourly Review Request:**
-   - Checks if a customer's session has ended and sends them an email requesting a review.
+   - Checks if a customer's session has ended and sends them an email requesting a review (when cron running at time t it checks customers who had their appointments scheduled between t-2 and t-1, assuming a session to be 1 hour long).
    - Schedule: Runs every hour.
 
 ### Google Sheets Integration
