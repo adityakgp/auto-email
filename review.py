@@ -1,7 +1,9 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import pandas as pd
 from script import send_email_hourly
+import pytz
 
+ist = pytz.timezone('Asia/Kolkata')
 SHEET_ID='19opmWWe1XWSJoOo6MYEp5WsrtOo2nusPO3VW_65lMCQ'
 URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?gid=913445633&format=csv"
 
@@ -11,12 +13,12 @@ def load_df(url):
     return df
 
 def query_data_and_send_emails_daily(df):
-    present = datetime.now()
+    present = datetime.now(ist)
     t1=present-timedelta(hours=1)
     t2=present-timedelta(hours=2)
     email_counter = 0
     for _, row in df.iterrows():
-        if (t2<row["Preferred_Time"]<t1):
+        if (t2<row["Preferred_Time"].replace(tzinfo=ist)<t1 and row["Preferred_Date"].date()==date.today()):
             send_email_hourly(
                 subject=f'Rate us',
                 receiver_email=row["Email_Address"],
@@ -24,6 +26,7 @@ def query_data_and_send_emails_daily(df):
             )
             email_counter += 1
     return f"Total Emails Sent: {email_counter}"
+    # return datetime.now(ist)
 
 df = load_df(URL)
 result = query_data_and_send_emails_daily(df)

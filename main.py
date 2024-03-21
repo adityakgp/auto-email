@@ -1,7 +1,9 @@
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 import pandas as pd
 from script import send_email
+import pytz
 
+ist = pytz.timezone('Asia/Kolkata')
 SHEET_ID='19opmWWe1XWSJoOo6MYEp5WsrtOo2nusPO3VW_65lMCQ'
 URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?gid=913445633&format=csv"
 
@@ -11,7 +13,10 @@ def load_df(url):
     return df
 
 def query_data_and_send_emails_daily(df):
-    present = date.today()
+    curr = date.today()
+    present_utc = datetime.combine(curr, datetime.min.time()).replace(tzinfo=pytz.utc)
+    present_ist = present_utc.astimezone(ist)
+    present=present_ist.date()
     email_counter = 0
     for _, row in df.iterrows():
         if (present+timedelta(days=3) == row["Preferred_Date"].date()):
@@ -24,15 +29,9 @@ def query_data_and_send_emails_daily(df):
             )
             email_counter += 1
     return f"Total Emails Sent: {email_counter}"
+    # return present
+            
 
 df = load_df(URL)
 result = query_data_and_send_emails_daily(df)
-
-# df["Preferred_Time"] = pd.to_datetime(df["Preferred_Time"])
-# df["Cron_Time"] = df["Preferred_Time"].dt.strftime("%H %M")
-# cron_times_list = []
-
-# for cron_time in df["Cron_Time"]:
-#     cron_times_list.append(cron_time)
-
-# print(cron_times_list)
+print(result)
